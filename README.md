@@ -1,4 +1,7 @@
 # Loan
+1. run composer update
+2. run php artisan key:generate
+3. run php artisan serve
 # Laravel PHP Framework
 
 [![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
