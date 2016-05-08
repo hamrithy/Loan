@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
     <head>        
@@ -15,6 +16,11 @@
         <!-- EOF CSS INCLUDE -->                                    
     </head>
     <body>
+=======
+@extends('admin._layout.app')
+
+@section('app')
+>>>>>>> 5e2067df96cf457695613eba47cc9110ea324dbf
         <!-- START PAGE CONTAINER -->
         <div class="page-container">
             
@@ -702,6 +708,7 @@
             </div>
         </div>
         <!-- END MESSAGE BOX-->
+<<<<<<< HEAD
 
         <!-- START PRELOADS -->
         <audio id="audio-alert" src="/joli/audio/alert.mp3" preload="auto"></audio>
@@ -744,6 +751,10 @@
     <!-- END SCRIPTS -->         
     </body>
 </html>
+=======
+@stop
+
+>>>>>>> 5e2067df96cf457695613eba47cc9110ea324dbf
 
 
 
