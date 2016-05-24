@@ -12,7 +12,7 @@ class CreateGroupLoanMemberTable extends Migration
      */
     public function up()
     {
-        Schema::table('group_loan_members', function (Blueprint $table) {
+        Schema::create('group_loan_members', function (Blueprint $table) {
             $table->integer('group_id')->unsigned();
             $table->integer('member_id')->unsigned();
             $table->integer('member_type');
@@ -21,7 +21,7 @@ class CreateGroupLoanMemberTable extends Migration
             $table->integer('updated_by');
             $table->timestamps();
 
-            $table->primary(['group_id, member_id']);
+            $table->primary(['group_id', 'member_id']);
         });
     }
 

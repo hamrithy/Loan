@@ -12,7 +12,7 @@ class CreateAccountChartsTable extends Migration
      */
     public function up()
     {
-        Schema::table('account_charts', function (Blueprint $table) {
+        Schema::create('account_charts', function (Blueprint $table) {
             $table->string('account_code')->primary();
             $table->string('account_name');
             $table->integer('account_type_id');

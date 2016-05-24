@@ -12,7 +12,7 @@ class CreateLoanPaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('loan_payments', function (Blueprint $table) {
+        Schema::create('loan_payments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('code')->unique();
             $table->integer('loan_id')->unsigned();

@@ -12,7 +12,7 @@ class CreateExchangeRatesTable extends Migration
      */
     public function up()
     {
-        Schema::table('exchange_rates', function (Blueprint $table) {
+        Schema::create('exchange_rates', function (Blueprint $table) {
             $table->increments('id');
             $table->decimal('bid');
             $table->decimal('ask');

@@ -12,7 +12,7 @@ class CreateAccountTypesTable extends Migration
      */
     public function up()
     {
-        Schema::table('account_types', function (Blueprint $table) {
+        Schema::create('account_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->integer('status');

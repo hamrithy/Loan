@@ -12,7 +12,7 @@ class CreateCustomerTable extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('cus_code')->unique();
             $table->string('name');

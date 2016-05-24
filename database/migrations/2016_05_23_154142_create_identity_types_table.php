@@ -12,7 +12,7 @@ class CreateIdentityTypesTable extends Migration
      */
     public function up()
     {
-        Schema::table('identity_types', function (Blueprint $table) {
+        Schema::create('identity_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->integer('status');

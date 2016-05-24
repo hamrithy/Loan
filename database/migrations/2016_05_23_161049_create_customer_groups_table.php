@@ -12,7 +12,7 @@ class CreateCustomerGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::table('customer_groups', function (Blueprint $table) {
+        Schema::create('customer_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('group_code');
             $table->integer('created_by');
