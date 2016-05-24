@@ -14,14 +14,27 @@ class CreateInvestorsTable extends Migration
     {        
         Schema::create('investors', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('full_name');
-            $table->datetime('birth_date');
-            $table->string('personal_identity');
-            $table->integer('personal_id_type');
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->string('latin_name')->nullable();
+            $table->datetime('date_of_birth');
+            $table->char('gender');
+            $table->string('identity_no');
+            $table->integer('identity_type');
             $table->string('phone_number');
+            $table->string('email')->nullable();
             $table->string('address');
+            $table->string('province_code');
+            $table->integer('district_id');
+            $table->integer('commune_id');
+            $table->integer('village_id');
+            $table->string('street')->nullable();
+            $table->string('house_no');
+            $table->string('profile_photo')->nullable();
+            $table->integer('status');
+            $table->text('memo')->nullable();
             $table->integer('created_by');
-            $table->integer('updated_by');
+            $table->integer('updated_by')->nullable();
             $table->timestamps();
         });
     }
