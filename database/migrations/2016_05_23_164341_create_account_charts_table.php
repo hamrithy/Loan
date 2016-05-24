@@ -30,8 +30,6 @@ class CreateAccountChartsTable extends Migration
      */
     public function down()
     {
-        Schema::table('account_charts', function (Blueprint $table) {
-            //
-        });
+        Schema::drop('account_charts');
     }
 }
