@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAccountChartsTable extends Migration
+class CreateTransactionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,14 @@ class CreateAccountChartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('account_charts', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('account_code')->unique();
-            $table->string('account_name');
-            $table->integer('account_type_id');
-            $table->integer('sub_of')->nullable();
+            $table->integer('owner_id');
+            $table->integer('owner_type');
+            $table->string('trans_type');
+            $table->decimal('amount');
+            $table->string('currency');
+            $table->integer('flag');
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();
@@ -31,6 +33,6 @@ class CreateAccountChartsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('account_charts');
+        Schema::drop('transactions');
     }
 }
