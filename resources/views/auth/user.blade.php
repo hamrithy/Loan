@@ -46,11 +46,11 @@
 							Showing @{{ pagination.from }} to @{{ pagination.to }} of @{{ pagination.total }} @{{ pagination.total |  pluralize 'record' }}
 						</div>
 						<div id="DataTables_Table_0_paginate" class="dataTables_paginate paging_simple_numbers">
-							<a v-on:click.stop.prevent="previous" class="paginate_button previous disabled">Previous</a>
+							<a v-on:click.stop.prevent="previous" class="paginate_button previous" v-bind:class="{ 'paginate_button_disabled': pagination.current_page === 1}">Previous</a>
 							<span v-for="page in pagination.total">
-								<a v-on:click.stop.prevent="goTo(page)" class="paginate_button" v-if="page > 0">@{{ page }}</a>
+								<a v-on:click.stop.prevent="goTo(page)" class="paginate_button" v-if="page > 0" v-bind:class="{ 'current': pagination.current_page == page}">@{{ page }}</a>
 							</span>
-							<a v-on:click.stop.prevent="next" class="paginate_button next">Next</a>
+							<a v-on:click.stop.prevent="next" class="paginate_button next" v-bind:class="{ 'paginate_button_disabled': pagination.current_page === pagination.last_page}">Next</a>
 						</div>
           </div>
 				</div>

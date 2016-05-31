@@ -11848,10 +11848,14 @@ new _vue2.default({
     },
 
     previous: function previous() {
+      if (this.pagination.current_page === 1) return;
+
       this.fetchData(this.pagination.prev_page_url);
     },
 
     next: function next() {
+      if (this.pagination.current_page === this.pagination.last_page) return;
+
       this.fetchData(this.pagination.next_page_url);
     },
 
