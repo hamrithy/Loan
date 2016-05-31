@@ -23,4 +23,24 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Encript user's password.
+     * 
+     * @param string $value;
+     */
+    protected function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * A user has a role.
+     * 
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function role()
+    {
+      return $this->belongsTo('App\Role', 'role_id', 'id');
+    }
 }

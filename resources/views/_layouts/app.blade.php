@@ -34,5 +34,6 @@
   <!-- END MESSAGE BOX-->
 
   @include('_scripts.joli_script')
+  <script type="text/javascript" src="/js/app.js"></script>
 </body>
 </html>

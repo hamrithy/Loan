@@ -20,7 +20,7 @@ $factory->define(App\Role::class, function (Faker\Generator $faker) {
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'user_name' => $faker->username,
-        'password' => bcrypt(12345678),
+        'password' => 12345678,
         'full_name' => $faker->name,
         'email' => $faker->safeEmail,
         'role_id' => 1,
