@@ -11,6 +11,12 @@
 |
 */
 
+$factory->define(App\Role::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->randomElement(['Administrator', 'Accountant']),
+    ];
+});
+
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'user_name' => $faker->username,
