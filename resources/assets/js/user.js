@@ -1,21 +1,16 @@
 import Vue from 'vue'
+import user_grid from './components/user-grid'
 
 Vue.use(require('vue-resource'))
+
+Vue.component('user-grid', user_grid);
 
 new Vue({
   el: '#user_app',
 
-  data: {
-  	// user: {
-  	// 	user_name: '',
-	  //   full_name: '',
-	  //   email: '',
-	  //   role: '',
-	  //   status: ''
-  	// }    
-  	
+  data: {  
   	users: [],
-  	pagination: {
+		pagination: {
   		current_page: '',
   		from: '',
   		to: '',
@@ -24,7 +19,8 @@ new Vue({
   		total: '',
   		next_page_url: '',
   		prev_page_url: ''
-  	}
+  	},
+  	message : ''
   },
 
   ready: function() {  	
@@ -32,7 +28,7 @@ new Vue({
   },
 
   methods: {
-  	fetchData: function(api_url){
+		fetchData: function(api_url){
   		var resource = this.$resource(api_url);
 
 			resource.get().then(function(response){ 
@@ -52,23 +48,31 @@ new Vue({
 	  		this.pagination.prev_page_url = result.prev_page_url;
 
 	  	});
-  	},
+  	}
+  },
 
-  	previous: function(){
-  		if(this.pagination.current_page === 1) return;
+  events: {
+    'child-msg': function (msg) {
+      // `this` in event callbacks are automatically bound
+      // to the instance that registered it
+      this.message = msg;
+    },
+
+    'pg-previous': function(){
+    	if(this.pagination.current_page === 1) return;
 
   		this.fetchData(this.pagination.prev_page_url);
-  	},
+    },
 
-  	next: function(){
+    'pg-next': function(){    	
   		if(this.pagination.current_page === this.pagination.last_page) return;
 
   		this.fetchData(this.pagination.next_page_url);
-  	},
+    },
 
-  	goTo: function(page){
+    'pg-goTo': function(page){  
   		this.fetchData('/api/user/?page=' + page);
-  	}
-  } 
+    }
+  }
 });
 

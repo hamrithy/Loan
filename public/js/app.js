@@ -11788,26 +11788,61 @@ module.exports = Vue;
 },{"_process":1}],4:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	template: '#user-table-template',
+
+	props: {
+		users: Array,
+		pagination: Object
+	},
+
+	data: function data() {
+		return {};
+	},
+
+	methods: {
+		previous: function previous() {
+			this.$dispatch('pg-previous');
+		},
+
+		next: function next() {
+			this.$dispatch('pg-next');
+		},
+
+		goTo: function goTo(page) {
+			this.$dispatch('pg-goTo', page);
+		},
+
+		notify: function notify() {
+			this.$dispatch('child-msg', 'Call from child');
+		}
+	}
+};
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
 var _vue = require('vue');
 
 var _vue2 = _interopRequireDefault(_vue);
+
+var _userGrid = require('./components/user-grid');
+
+var _userGrid2 = _interopRequireDefault(_userGrid);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(require('vue-resource'));
 
+_vue2.default.component('user-grid', _userGrid2.default);
+
 new _vue2.default({
   el: '#user_app',
 
   data: {
-    // user: {
-    // 	user_name: '',
-    //   full_name: '',
-    //   email: '',
-    //   role: '',
-    //   status: ''
-    // }   
-
     users: [],
     pagination: {
       current_page: '',
@@ -11818,7 +11853,8 @@ new _vue2.default({
       total: '',
       next_page_url: '',
       prev_page_url: ''
-    }
+    },
+    message: ''
   },
 
   ready: function ready() {
@@ -11845,26 +11881,34 @@ new _vue2.default({
         this.pagination.next_page_url = result.next_page_url;
         this.pagination.prev_page_url = result.prev_page_url;
       });
+    }
+  },
+
+  events: {
+    'child-msg': function childMsg(msg) {
+      // `this` in event callbacks are automatically bound
+      // to the instance that registered it
+      this.message = msg;
     },
 
-    previous: function previous() {
+    'pg-previous': function pgPrevious() {
       if (this.pagination.current_page === 1) return;
 
       this.fetchData(this.pagination.prev_page_url);
     },
 
-    next: function next() {
+    'pg-next': function pgNext() {
       if (this.pagination.current_page === this.pagination.last_page) return;
 
       this.fetchData(this.pagination.next_page_url);
     },
 
-    goTo: function goTo(page) {
+    'pg-goTo': function pgGoTo(page) {
       this.fetchData('/api/user/?page=' + page);
     }
   }
 });
 
-},{"vue":3,"vue-resource":2}]},{},[4]);
+},{"./components/user-grid":4,"vue":3,"vue-resource":2}]},{},[5]);
 
 //# sourceMappingURL=app.js.map
