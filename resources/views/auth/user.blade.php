@@ -47,8 +47,8 @@
 						</div>
 						<div id="DataTables_Table_0_paginate" class="dataTables_paginate paging_simple_numbers">
 							<a v-on:click.stop.prevent="previous" class="paginate_button previous" v-bind:class="{ 'paginate_button_disabled': pagination.current_page === 1}">Previous</a>
-							<span v-for="page in pagination.total">
-								<a v-on:click.stop.prevent="goTo(page)" class="paginate_button" v-if="page > 0" v-bind:class="{ 'current': pagination.current_page == page}">@{{ page }}</a>
+							<span v-for="page in pagination.last_page">
+								<a v-on:click.stop.prevent="goTo(page + 1)" class="paginate_button" v-bind:class="{ 'current': pagination.current_page === page + 1}">@{{ page + 1 }}</a>
 							</span>
 							<a v-on:click.stop.prevent="next" class="paginate_button next" v-bind:class="{ 'paginate_button_disabled': pagination.current_page === pagination.last_page}">Next</a>
 						</div>
