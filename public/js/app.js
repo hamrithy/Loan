@@ -11791,38 +11791,109 @@ module.exports = Vue;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.default = {
-	template: '#user-table-template',
+// export default {
+// 	template: '#user-form-template',
 
-	props: {
-		users: Array,
-		pagination: Object
-	},
+// 	data: function () {
+// 		return {
+// 			message: 'Hello'
+// 		}
+// 	}
+// }
+
+exports.default = {
+	template: '#user-form-template',
 
 	data: function data() {
 		return {};
 	},
 
 	methods: {
-		previous: function previous() {
-			this.$dispatch('pg-previous');
+		saveUser: function saveUser() {
+
+			this.$dispatch('show-form', false);
 		},
 
-		next: function next() {
-			this.$dispatch('pg-next');
-		},
-
-		goTo: function goTo(page) {
-			this.$dispatch('pg-goTo', page);
-		},
-
-		notify: function notify() {
-			this.$dispatch('child-msg', 'Call from child');
+		close: function close() {
+			this.$dispatch('show-form', false);
 		}
 	}
 };
 
 },{}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	template: '#user-table-template',
+
+	data: function data() {
+		return {
+			users: [],
+			pagination: {
+				current_page: '',
+				from: '',
+				to: '',
+				per_page: '',
+				last_page: '',
+				total: '',
+				next_page_url: '',
+				prev_page_url: ''
+			}
+		};
+	},
+
+	ready: function ready() {
+		this.fetchData('/api/user/');
+	},
+
+	methods: {
+		fetchData: function fetchData(api_url) {
+			var resource = this.$resource(api_url);
+
+			resource.get().then(function (response) {
+				var result = response.data;
+
+				// Get user data.
+				this.users = result.data;
+
+				// Get pagination data.
+				this.pagination.current_page = result.current_page;
+				this.pagination.from = result.from;
+				this.pagination.to = result.to;
+				this.pagination.per_page = result.per_page;
+				this.pagination.total = result.total;
+				this.pagination.last_page = result.last_page;
+				this.pagination.next_page_url = result.next_page_url;
+				this.pagination.prev_page_url = result.prev_page_url;
+			});
+		},
+
+		previous: function previous() {
+			if (this.pagination.current_page === 1) return;
+
+			this.fetchData(this.pagination.prev_page_url);
+		},
+
+		next: function next() {
+			if (this.pagination.current_page === this.pagination.last_page) return;
+
+			this.fetchData(this.pagination.next_page_url);
+		},
+
+		goTo: function goTo(page) {
+			this.fetchData('/api/user/?page=' + page);
+		},
+
+		showUserForm: function showUserForm() {
+			this.$dispatch('show-form', true);
+		}
+	}
+};
+
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var _vue = require('vue');
@@ -11833,82 +11904,37 @@ var _userGrid = require('./components/user-grid');
 
 var _userGrid2 = _interopRequireDefault(_userGrid);
 
+var _userForm = require('./components/user-form');
+
+var _userForm2 = _interopRequireDefault(_userForm);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _vue2.default.use(require('vue-resource'));
 
 _vue2.default.component('user-grid', _userGrid2.default);
+_vue2.default.component('user-form', _userForm2.default);
 
 new _vue2.default({
   el: '#user_app',
 
   data: {
-    users: [],
-    pagination: {
-      current_page: '',
-      from: '',
-      to: '',
-      per_page: '',
-      last_page: '',
-      total: '',
-      next_page_url: '',
-      prev_page_url: ''
-    },
-    message: ''
+    form_show: false,
+    currentView: 'user_grid'
   },
 
-  ready: function ready() {
-    this.fetchData('/api/user/');
-  },
-
-  methods: {
-    fetchData: function fetchData(api_url) {
-      var resource = this.$resource(api_url);
-
-      resource.get().then(function (response) {
-        var result = response.data;
-
-        // Get user data.
-        this.users = result.data;
-
-        // Get pagination data.
-        this.pagination.current_page = result.current_page;
-        this.pagination.from = result.from;
-        this.pagination.to = result.to;
-        this.pagination.per_page = result.per_page;
-        this.pagination.total = result.total;
-        this.pagination.last_page = result.last_page;
-        this.pagination.next_page_url = result.next_page_url;
-        this.pagination.prev_page_url = result.prev_page_url;
-      });
-    }
+  components: {
+    user_grid: _userGrid2.default,
+    user_form: _userForm2.default
   },
 
   events: {
-    'child-msg': function childMsg(msg) {
-      // `this` in event callbacks are automatically bound
-      // to the instance that registered it
-      this.message = msg;
-    },
-
-    'pg-previous': function pgPrevious() {
-      if (this.pagination.current_page === 1) return;
-
-      this.fetchData(this.pagination.prev_page_url);
-    },
-
-    'pg-next': function pgNext() {
-      if (this.pagination.current_page === this.pagination.last_page) return;
-
-      this.fetchData(this.pagination.next_page_url);
-    },
-
-    'pg-goTo': function pgGoTo(page) {
-      this.fetchData('/api/user/?page=' + page);
+    'show-form': function showForm(value) {
+      this.form_show = value;
     }
   }
 });
 
-},{"./components/user-grid":4,"vue":3,"vue-resource":2}]},{},[5]);
+},{"./components/user-form":4,"./components/user-grid":5,"vue":3,"vue-resource":2}]},{},[6]);
 
 //# sourceMappingURL=app.js.map
