@@ -1,26 +1,27 @@
-// export default {
-// 	template: '#user-form-template',
-
-// 	data: function () {
-// 		return {
-// 			message: 'Hello'
-// 		}
-// 	}
-// }
-
 export default {
 	template: '#user-form-template',
 
 	data: function () {
-		return {
-			
+		return {	
+			user: {		
+				user_name : '',
+				email: '',
+				full_name: '',
+				role_id: ''
+			}	
 		}
 	},
 
 	methods: {
-		saveUser: function(){
-			
-			this.$dispatch('show-form', false);
+		saveUser: function(){			
+			var resource = this.$resource('/api/user');
+
+			resource.save(this.user).then(function(response){
+				console.log(response);
+			});
+
+
+			//this.$dispatch('show-form', false);
 		},
 
 		close: function(){

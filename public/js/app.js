@@ -11791,27 +11791,29 @@ module.exports = Vue;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-// export default {
-// 	template: '#user-form-template',
-
-// 	data: function () {
-// 		return {
-// 			message: 'Hello'
-// 		}
-// 	}
-// }
-
 exports.default = {
 	template: '#user-form-template',
 
 	data: function data() {
-		return {};
+		return {
+			user: {
+				user_name: '',
+				email: '',
+				full_name: '',
+				role_id: ''
+			}
+		};
 	},
 
 	methods: {
 		saveUser: function saveUser() {
+			var resource = this.$resource('/api/user');
 
-			this.$dispatch('show-form', false);
+			resource.save(this.user).then(function (response) {
+				console.log(response);
+			});
+
+			//this.$dispatch('show-form', false);
 		},
 
 		close: function close() {

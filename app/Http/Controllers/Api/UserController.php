@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\User;
 
 class UserController extends Controller
 {
@@ -16,6 +15,19 @@ class UserController extends Controller
 		 */
     public function getUsers()
     {
-    	return \App\User::with('role')->paginate(5);
+    	return User::with('role')->paginate(5);
+    }
+
+    /**
+     * Create a new user.
+     * 
+     * @param  Illuminate\Http\Request $request
+     * @param  App\User    $user
+     * 
+     * @return App\User
+     */
+    public function store(Request $request, User $user)
+    {   	
+    	return $user->createUser($request->all());
     }
 }

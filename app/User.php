@@ -43,4 +43,19 @@ class User extends Authenticatable
     {
       return $this->belongsTo('App\Role', 'role_id', 'id');
     }
+
+    /**
+     * Create a user with the given data and default password.
+     * 
+     * @param  Array $data
+     * @param  string $password
+     * 
+     * @return static
+     */
+    public function createUser($data, $password = '12345678')
+    {
+        $data['password'] = $password;
+        
+        return $this->create($data);
+    }
 }
