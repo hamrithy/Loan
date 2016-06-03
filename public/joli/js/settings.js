@@ -40,10 +40,12 @@ var site_settings = '<div class="ts-button">'
         
     +'</div>';
     
-var settings_block = document.createElement('div');
-    settings_block.className = "theme-settings";
-    settings_block.innerHTML = site_settings;
-    document.body.appendChild(settings_block);
+// var settings_block = document.createElement('div');
+//     settings_block.className = "theme-settings";
+//     settings_block.innerHTML = site_settings;
+//     document.body.appendChild(settings_block);
+
+var settings_block = '';
 
 $(document).ready(function(){
 

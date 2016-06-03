@@ -17,7 +17,7 @@
 <!-- END THIS PAGE PLUGINS-->        
 
 <!-- START TEMPLATE -->
-<!-- <script type="text/javascript" src="/joli/js/settings.js"></script> -->
+<script type="text/javascript" src="/joli/js/settings.js"></script>
 
 <script type="text/javascript" src="/joli/js/plugins.js"></script>        
 <script type="text/javascript" src="/joli/js/actions.js"></script>
