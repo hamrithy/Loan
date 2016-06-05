@@ -25,7 +25,7 @@
         </li>
         <li class="xn-title">Navigation</li>
         <li class="active">
-            <a href="index.html"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
+            <a v-link="{ path: '/' }"><span class="fa fa-desktop"></span> <span class="xn-text">Dashboard</span></a>                        
         </li>                    
         <li class="xn-openable">
             <a href="#"><span class="fa fa-files-o"></span> <span class="xn-text">Setup</span></a>
@@ -35,7 +35,7 @@
                 <li><a href="pages-profile.html">Chart of Account</a></li>
                 <li><a href="pages-gallery.html">Exchange Rate</a></li>
                 <li><a href="pages-gallery.html">Identity Type</a></li>
-                <li><a href="{{ url('auth/user') }}">User Account</a></li>
+                <li><a v-link="{ path: '/auth/user' }">User Account</a></li>
                 <li><a href="pages-profile.html">User Role</a></li>
                 <li><a href="pages-profile.html">Location</a></li>
             </ul>

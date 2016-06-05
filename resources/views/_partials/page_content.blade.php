@@ -6,5 +6,10 @@
   </ul>
   <!-- END BREADCRUMB -->  
   
-  @yield('content_wrapper')       
+  <!-- yield('content_wrapper') -->       
+  <!-- <component :is="currentView"></component> --> 
+
+
+  <router-view></router-view>
+
 </div> 
