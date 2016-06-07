@@ -14826,11 +14826,15 @@ var _vueRouter = require('vue-router');
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-var _dashboard = require('./components/dashboard.vue');
+var _grid = require('./mixins/grid');
+
+var _grid2 = _interopRequireDefault(_grid);
+
+var _dashboard = require('../../views/components/dashboard.vue');
 
 var _dashboard2 = _interopRequireDefault(_dashboard);
 
-var _user_account = require('./components/user_account.vue');
+var _user_account = require('../../views/components/user_account.vue');
 
 var _user_account2 = _interopRequireDefault(_user_account);
 
@@ -14838,6 +14842,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _vue2.default.use(_vueRouter2.default);
 _vue2.default.use(require('vue-resource'));
+
+_vue2.default.mixin(_grid2.default);
 
 var App = _vue2.default.extend({});
 
@@ -14854,7 +14860,38 @@ router.map({
 
 router.start(App, 'body');
 
-},{"./components/dashboard.vue":8,"./components/user_account.vue":11,"vue":5,"vue-resource":3,"vue-router":4}],8:[function(require,module,exports){
+},{"../../views/components/dashboard.vue":9,"../../views/components/user_account.vue":12,"./mixins/grid":8,"vue":5,"vue-resource":3,"vue-router":4}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  data: function data() {
+    return {
+      check_all: false,
+      checked_list: []
+    };
+  },
+
+  methods: {
+    onSelectAll: function onSelectAll(data_set) {
+      if (this.check_all === true) {
+        this.users.forEach(function (data_set) {
+          this.checked_list.push(data_set.id + '');
+        }.bind(this));
+      } else {
+        this.checked_list.splice(0);
+      }
+    },
+
+    onSelectItems: function onSelectItems() {
+      this.check_all = false;
+    }
+  }
+};
+
+},{}],9:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 "use strict";
 
@@ -14868,7 +14905,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/var/www/Loan/resources/assets/js/components/dashboard.vue"
+  var id = "/var/www/Loan/resources/views/components/dashboard.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -14879,7 +14916,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}],9:[function(require,module,exports){
+},{"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}],10:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -14903,9 +14940,13 @@ exports.default = {
 		saveUser: function saveUser() {
 			var resource = this.$resource('/api/user');
 
-			//resource.save(this.user, {_token: this.token}).then(function(response){
-			//	console.log(response);
-			//});
+			resource.save(this.user).then(function (response) {
+				console.log(response);
+
+				var user = response.data;
+			});
+
+			this.$dispatch('add-new-user-msg');
 
 			this.showGrid();
 		},
@@ -14921,7 +14962,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/var/www/Loan/resources/assets/js/components/user-form.vue"
+  var id = "/var/www/Loan/resources/views/components/user-form.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -14932,7 +14973,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}],10:[function(require,module,exports){
+},{"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}],11:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -14952,7 +14993,9 @@ exports.default = {
 				total: '',
 				next_page_url: '',
 				prev_page_url: ''
-			}
+			},
+			check_all: false,
+			checked_list: []
 		};
 	},
 
@@ -15001,15 +15044,21 @@ exports.default = {
 		showForm: function showForm() {
 			this.$dispatch('show-form-msg');
 		}
+	},
+
+	events: {
+		'add-new-user-msg': function addNewUserMsg() {
+			console.log('form grid');
+		}
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"panel panel-default\">\n\t<div class=\"panel-body\">\n\t\t<div class=\"dataTables_wrapper no-footer\">\n\t\t\t<div class=\"dataTables_length\">\n\t\t\t\t<label>Show \n\t\t\t\t\t<select class=\"form-control\">\n\t\t\t\t\t\t<option value=\"10\">10</option>\n\t\t\t\t\t\t<option value=\"25\">25</option>\n\t\t\t\t\t\t<option value=\"50\">50</option>\n\t\t\t\t\t\t<option value=\"100\">100</option>\n\t\t\t\t\t</select> \n\t\t\t\t\tentries\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div class=\"dataTables_filter\">\n\t\t\t\t<label>Search:<input class=\"form-control \" type=\"search\"></label>\n\t\t\t</div>\n\t\t\t<table class=\"table datatable dataTable no-footer\">\n\t\t    <thead>\n\t\t      <tr>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting_desc\">User Account</th>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting\">Full Name</th>\n\t\t      \t<th style=\"width: 250px;\" class=\"sorting\">Email</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Role</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Status</th>\n\t\t      </tr>\n\t\t    </thead>\n\t\t    <tbody>\n\t\t      <tr v-for=\"user in users\">\n\t\t          <td>{{ user.user_name }}</td>\n\t\t          <td>{{ user.full_name }}</td>\n\t\t          <td>{{ user.email }}</td>\n\t\t          <td>{{ user.role.name }}</td>\n\t\t          <td>{{ user.status }}</td>\n\t\t      </tr>\n\t\t    </tbody>\n\t\t\t</table>\n\t\t\t<div class=\"dataTables_info\">\n\t\t\t\tShowing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} {{ pagination.total |  pluralize 'record' }}\n\t\t\t</div>\n\t\t\t<div class=\"dataTables_paginate paging_simple_numbers\">\n\t\t\t\t<a v-on:click.stop.prevent=\"previous\" class=\"paginate_button previous\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === 1}\">Previous</a>\n\t\t\t\t<span v-for=\"page in pagination.last_page\">\n\t\t\t\t\t<a v-on:click.stop.prevent=\"goTo(page + 1)\" class=\"paginate_button\" v-bind:class=\"{ 'current': pagination.current_page === page + 1}\">{{ page + 1 }}</a>\n\t\t\t\t</span>\n\t\t\t\t<a v-on:click.stop.prevent=\"next\" class=\"paginate_button next\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === pagination.last_page}\">Next</a>\n\t\t\t</div>\n\t\t\t<button class=\"btn btn-primary\" v-on:click=\"showForm\">New</button>\n\t\t</div>\n\t</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"panel panel-default\">\n\t<div class=\"panel-body\">\n\t\t<div class=\"dataTables_wrapper no-footer\">\n\t\t\t<div class=\"dataTables_length\">\n\t\t\t\t<label>Show \n\t\t\t\t\t<select class=\"form-control\">\n\t\t\t\t\t\t<option value=\"10\">10</option>\n\t\t\t\t\t\t<option value=\"25\">25</option>\n\t\t\t\t\t\t<option value=\"50\">50</option>\n\t\t\t\t\t\t<option value=\"100\">100</option>\n\t\t\t\t\t</select> \n\t\t\t\t\tentries\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div class=\"dataTables_filter\">\n\t\t\t\t<label>Search:<input class=\"form-control \" type=\"search\"></label>\n\t\t\t</div>\n\t\t\t<table class=\"table datatable dataTable no-footer\">\n\t\t    <thead>\n\t\t      <tr>\n\t\t      \t<th style=\"width: 30px; text-align: center;\"><input type=\"checkbox\" v-model=\"check_all\" v-on:change=\"onSelectAll(users)\"></th>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting_desc\">User Account</th>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting\">Full Name</th>\n\t\t      \t<th style=\"width: 250px;\" class=\"sorting\">Email</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Role</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Status</th>\n\t\t      </tr>\n\t\t    </thead>\n\t\t    <tbody>\n\t\t      <tr v-for=\"user in users\">\n\t\t      \t\t<td style=\"text-align: center;\">\n\t\t      \t\t\t<input type=\"checkbox\" value=\"{{ user.id }}\" v-model=\"checked_list\" v-on:change=\"onSelectItems\">\n\t\t      \t\t</td>\n\t\t          <td>{{ user.user_name }}</td>\n\t\t          <td>{{ user.full_name }}</td>\n\t\t          <td>{{ user.email }}</td>\n\t\t          <td>{{ user.role.name }}</td>\n\t\t          <td>{{ user.status }}</td>\n\t\t      </tr>\n\t\t    </tbody>\n\t\t\t</table>\n\t\t\t<div class=\"dataTables_info\">\n\t\t\t\tShowing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} {{ pagination.total |  pluralize 'record' }}\n\t\t\t</div>\n\t\t\t<div class=\"dataTables_paginate paging_simple_numbers\">\n\t\t\t\t<a v-on:click.stop.prevent=\"previous\" class=\"paginate_button previous\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === 1}\">Previous</a>\n\t\t\t\t<span v-for=\"page in pagination.last_page\">\n\t\t\t\t\t<a v-on:click.stop.prevent=\"goTo(page + 1)\" class=\"paginate_button\" v-bind:class=\"{ 'current': pagination.current_page === page + 1}\">{{ page + 1 }}</a>\n\t\t\t\t</span>\n\t\t\t\t<a v-on:click.stop.prevent=\"next\" class=\"paginate_button next\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === pagination.last_page}\">Next</a>\n\t\t\t</div>\n\t\t\t<button class=\"btn btn-primary\" v-on:click=\"showForm\">New</button>\n\t\t</div>\n\t</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/var/www/Loan/resources/assets/js/components/user-grid.vue"
+  var id = "/var/www/Loan/resources/views/components/user-grid.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -15020,7 +15069,7 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}],11:[function(require,module,exports){
+},{"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}],12:[function(require,module,exports){
 var __vueify_style__ = require("vueify-insert-css").insert("\n")
 'use strict';
 
@@ -15057,6 +15106,10 @@ exports.default = {
 
 		'show-grid-msg': function showGridMsg() {
 			this.currentView = 'user_grid';
+		},
+
+		'add-new-user-msg': function addNewUserMsg() {
+			console.log('parent');
 		}
 	}
 };
@@ -15066,7 +15119,7 @@ if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
-  var id = "/var/www/Loan/resources/assets/js/components/user_account.vue"
+  var id = "/var/www/Loan/resources/views/components/user_account.vue"
   module.hot.dispose(function () {
     require("vueify-insert-css").cache["\n"] = false
     document.head.removeChild(__vueify_style__)
@@ -15077,6 +15130,6 @@ if (module.hot) {(function () {  module.hot.accept()
     hotAPI.update(id, module.exports, (typeof module.exports === "function" ? module.exports.options : module.exports).template)
   }
 })()}
-},{"./user-form.vue":9,"./user-grid.vue":10,"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}]},{},[7]);
+},{"./user-form.vue":10,"./user-grid.vue":11,"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}]},{},[7]);
 
 //# sourceMappingURL=app.js.map

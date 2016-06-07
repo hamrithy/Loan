@@ -25,6 +25,10 @@ export default{
 
 		'show-grid-msg': function(){
 			this.currentView = 'user_grid';
+		},
+
+		'add-new-user-msg': function(){
+			console.log('parent');
 		}
 	}
 }

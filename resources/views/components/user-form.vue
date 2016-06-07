@@ -1,10 +1,10 @@
-<script type="text/x-template" id="user-form-template">
+<template>
 	<form class="form-horizontal">
 		<div class="panel panel-default">
 			<div class="panel-heading">
         <h3 class="panel-title">User Form</h3>
         <ul class="panel-controls">
-            <li><a href="#" class="panel-remove"><span class="fa fa-times" v-on:click.stop.prevent="close"></span></a></li>
+            <li><a href="#" class="panel-remove"><span class="fa fa-times"></span></a></li>
         </ul>
       </div>
 			<div class="panel-body">							
@@ -51,7 +51,46 @@
         <button class="btn btn-primary pull-right" v-on:click.stop.prevent="saveUser">Save</button>
       </div>
 		</div>
-    {{ method_field('POST') }}
-    <input type="hidden" name="_token" value="{{ csrf_token() }}" v-model="token"/>
 	</form>
+</template>
+
+<script>
+export default{
+	data: function () {
+		return {	
+			user: {		
+				user_name : '',
+				email: '',
+				full_name: '',
+				role_id: ''
+			},
+			token: ''	
+		}
+	},
+
+	methods: {
+		saveUser: function(){			
+			var resource = this.$resource('/api/user');
+
+			resource.save(this.user).then(function(response){
+				console.log(response);
+
+				var user = response.data;
+
+				
+			});
+
+			this.$dispatch('add-new-user-msg');
+
+			this.showGrid();
+		},
+
+  	showGrid: function(){
+  		this.$dispatch('show-grid-msg');
+  	}
+	} 
+}
 </script>
+
+<style>
+</style>

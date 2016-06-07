@@ -1,10 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Dashboard from './components/dashboard.vue'
-import UserAccount from './components/user_account.vue'
+import grid_mixin from './mixins/grid'
+import Dashboard from '../../views/components/dashboard.vue'
+import UserAccount from '../../views/components/user_account.vue'
+
 
 Vue.use(VueRouter);
 Vue.use(require('vue-resource'))
+
+Vue.mixin(grid_mixin);
 
 var App = Vue.extend({});
 

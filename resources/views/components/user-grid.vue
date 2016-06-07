@@ -19,6 +19,7 @@
 				<table class="table datatable dataTable no-footer">
 			    <thead>
 			      <tr>
+			      	<th style="width: 30px; text-align: center;"><input type="checkbox" v-model="check_all" v-on:change="onSelectAll(users)"/></th>
 			      	<th style="width: 200px;" class="sorting_desc">User Account</th>
 			      	<th style="width: 200px;" class="sorting">Full Name</th>
 			      	<th style="width: 250px;" class="sorting">Email</th>
@@ -28,6 +29,12 @@
 			    </thead>
 			    <tbody>
 			      <tr v-for="user in users">
+			      		<td style="text-align: center;">
+			      			<input type="checkbox" 
+			      					value="{{ user.id }}" 
+			      					v-model="checked_list"
+			      					v-on:change="onSelectItems"/>
+			      		</td>
 			          <td>{{ user.user_name }}</td>
 			          <td>{{ user.full_name }}</td>
 			          <td>{{ user.email }}</td>
@@ -66,7 +73,9 @@ export default{
 	  		total: '',
 	  		next_page_url: '',
 	  		prev_page_url: ''
-	  	}
+	  	},
+	  	check_all: false,
+	  	checked_list: []
 		}
 	},
 
@@ -116,6 +125,12 @@ export default{
   	showForm: function(){
   		this.$dispatch('show-form-msg');
   	}
+	},
+
+	events: {
+		'add-new-user-msg': function(){
+			console.log('form grid');
+		}
 	}
 }
 </script>
