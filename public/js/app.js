@@ -14877,8 +14877,8 @@ exports.default = {
   methods: {
     onSelectAll: function onSelectAll(data_set) {
       if (this.check_all === true) {
-        this.users.forEach(function (data_set) {
-          this.checked_list.push(data_set.id + '');
+        data_set.forEach(function (data) {
+          this.checked_list.push(data.id + '');
         }.bind(this));
       } else {
         this.checked_list.splice(0);
