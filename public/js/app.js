@@ -14869,6 +14869,16 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
   data: function data() {
     return {
+      pagination: {
+        current_page: '',
+        from: '',
+        to: '',
+        per_page: '',
+        last_page: '',
+        total: '',
+        next_page_url: '',
+        prev_page_url: ''
+      },
       check_all: false,
       checked_list: []
     };
@@ -14887,6 +14897,17 @@ exports.default = {
 
     onSelectItems: function onSelectItems() {
       this.check_all = false;
+    },
+
+    setPagination: function setPagination(pagination) {
+      this.pagination.current_page = pagination.current_page;
+      this.pagination.from = pagination.from;
+      this.pagination.to = pagination.to;
+      this.pagination.per_page = pagination.per_page;
+      this.pagination.total = pagination.total;
+      this.pagination.last_page = pagination.last_page;
+      this.pagination.next_page_url = pagination.next_page_url;
+      this.pagination.prev_page_url = pagination.prev_page_url;
     }
   }
 };
@@ -14974,7 +14995,7 @@ if (module.hot) {(function () {  module.hot.accept()
   }
 })()}
 },{"vue":5,"vue-hot-reload-api":2,"vueify-insert-css":6}],11:[function(require,module,exports){
-var __vueify_style__ = require("vueify-insert-css").insert("\n")
+var __vueify_style__ = require("vueify-insert-css").insert("\n.dataTables_Footer{\n\tfont-size: 12px;\n\tpadding: 0px 0px 5px; \n}\n\n.dataTables_Footer .footer_left{\n  float: left;     \n}\n\n.dataTables_Footer .footer_left label{\n\tpadding: 0px;  \n  height: auto; \n  margin: 0px; \n  font-weight: normal; \n}\n\n.dataTables_Footer .footer_left select{\n\twidth: auto;\n  display: inline;\n  margin: 0px 5px;\n}\n\n.dataTables_Footer .footer_right{\n\tfloat: right;\n}\n")
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -14983,19 +15004,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
 	data: function data() {
 		return {
-			users: [],
-			pagination: {
-				current_page: '',
-				from: '',
-				to: '',
-				per_page: '',
-				last_page: '',
-				total: '',
-				next_page_url: '',
-				prev_page_url: ''
-			},
-			check_all: false,
-			checked_list: []
+			users: []
 		};
 	},
 
@@ -15010,18 +15019,9 @@ exports.default = {
 			resource.get().then(function (response) {
 				var result = response.data;
 
-				// Get user data.
 				this.users = result.data;
 
-				// Get pagination data.
-				this.pagination.current_page = result.current_page;
-				this.pagination.from = result.from;
-				this.pagination.to = result.to;
-				this.pagination.per_page = result.per_page;
-				this.pagination.total = result.total;
-				this.pagination.last_page = result.last_page;
-				this.pagination.next_page_url = result.next_page_url;
-				this.pagination.prev_page_url = result.prev_page_url;
+				this.setPagination(result);
 			});
 		},
 
@@ -15053,14 +15053,14 @@ exports.default = {
 	}
 };
 if (module.exports.__esModule) module.exports = module.exports.default
-;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"panel panel-default\">\n\t<div class=\"panel-body\">\n\t\t<div class=\"dataTables_wrapper no-footer\">\n\t\t\t<div class=\"dataTables_length\">\n\t\t\t\t<label>Show \n\t\t\t\t\t<select class=\"form-control\">\n\t\t\t\t\t\t<option value=\"10\">10</option>\n\t\t\t\t\t\t<option value=\"25\">25</option>\n\t\t\t\t\t\t<option value=\"50\">50</option>\n\t\t\t\t\t\t<option value=\"100\">100</option>\n\t\t\t\t\t</select> \n\t\t\t\t\tentries\n\t\t\t\t</label>\n\t\t\t</div>\n\t\t\t<div class=\"dataTables_filter\">\n\t\t\t\t<label>Search:<input class=\"form-control \" type=\"search\"></label>\n\t\t\t</div>\n\t\t\t<table class=\"table datatable dataTable no-footer\">\n\t\t    <thead>\n\t\t      <tr>\n\t\t      \t<th style=\"width: 30px; text-align: center;\"><input type=\"checkbox\" v-model=\"check_all\" v-on:change=\"onSelectAll(users)\"></th>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting_desc\">User Account</th>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting\">Full Name</th>\n\t\t      \t<th style=\"width: 250px;\" class=\"sorting\">Email</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Role</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Status</th>\n\t\t      </tr>\n\t\t    </thead>\n\t\t    <tbody>\n\t\t      <tr v-for=\"user in users\">\n\t\t      \t\t<td style=\"text-align: center;\">\n\t\t      \t\t\t<input type=\"checkbox\" value=\"{{ user.id }}\" v-model=\"checked_list\" v-on:change=\"onSelectItems\">\n\t\t      \t\t</td>\n\t\t          <td>{{ user.user_name }}</td>\n\t\t          <td>{{ user.full_name }}</td>\n\t\t          <td>{{ user.email }}</td>\n\t\t          <td>{{ user.role.name }}</td>\n\t\t          <td>{{ user.status }}</td>\n\t\t      </tr>\n\t\t    </tbody>\n\t\t\t</table>\n\t\t\t<div class=\"dataTables_info\">\n\t\t\t\tShowing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} {{ pagination.total |  pluralize 'record' }}\n\t\t\t</div>\n\t\t\t<div class=\"dataTables_paginate paging_simple_numbers\">\n\t\t\t\t<a v-on:click.stop.prevent=\"previous\" class=\"paginate_button previous\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === 1}\">Previous</a>\n\t\t\t\t<span v-for=\"page in pagination.last_page\">\n\t\t\t\t\t<a v-on:click.stop.prevent=\"goTo(page + 1)\" class=\"paginate_button\" v-bind:class=\"{ 'current': pagination.current_page === page + 1}\">{{ page + 1 }}</a>\n\t\t\t\t</span>\n\t\t\t\t<a v-on:click.stop.prevent=\"next\" class=\"paginate_button next\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === pagination.last_page}\">Next</a>\n\t\t\t</div>\n\t\t\t<button class=\"btn btn-primary\" v-on:click=\"showForm\">New</button>\n\t\t</div>\n\t</div>\n</div>\n"
+;(typeof module.exports === "function"? module.exports.options: module.exports).template = "\n<div class=\"panel panel-default\">\n\t<div class=\"panel-body\">\n\t\t<div class=\"dataTables_wrapper no-footer\">\t\n\t\t\t<div class=\"dataTables_length\">\n\t\t\t\t<button class=\"btn btn-primary\" v-on:click=\"showForm\">New</button>\n\t\t\t</div>\t\n\t\t\t<div class=\"dataTables_filter\">\n\t\t\t\t<label>Search:<input class=\"form-control \" type=\"search\"></label>\n\t\t\t</div>\n\t\t\t<table class=\"table datatable dataTable no-footer\">\n\t\t    <thead>\n\t\t      <tr>\n\t\t      \t<th style=\"width: 30px; text-align: center;\"><input type=\"checkbox\" v-model=\"check_all\" v-on:change=\"onSelectAll(users)\"></th>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting_desc\">User Account</th>\n\t\t      \t<th style=\"width: 200px;\" class=\"sorting\">Full Name</th>\n\t\t      \t<th style=\"width: 250px;\" class=\"sorting\">Email</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Role</th>\n\t\t      \t<th style=\"width: 69px;\" class=\"sorting\">Status</th>\n\t\t      </tr>\n\t\t    </thead>\n\t\t    <tbody>\n\t\t      <tr v-for=\"user in users\">\n\t\t      \t\t<td style=\"text-align: center;\">\n\t\t      \t\t\t<input type=\"checkbox\" value=\"{{ user.id }}\" v-model=\"checked_list\" v-on:change=\"onSelectItems\">\n\t\t      \t\t</td>\n\t\t          <td>{{ user.user_name }}</td>\n\t\t          <td>{{ user.full_name }}</td>\n\t\t          <td>{{ user.email }}</td>\n\t\t          <td>{{ user.role.name }}</td>\n\t\t          <td>{{ user.status }}</td>\n\t\t      </tr>\n\t\t    </tbody>\n\t\t\t</table>\n\t\t\t<div class=\"dataTables_Footer clearfix\" v-if=\"pagination.last_page > 1\">\n\t\t\t\t<div class=\"footer_left\">\n\t\t\t\t\t<label>Show \n\t\t\t\t\t\t<select class=\"form-control\">\n\t\t\t\t\t\t\t<option value=\"10\">10</option>\n\t\t\t\t\t\t\t<option value=\"25\">25</option>\n\t\t\t\t\t\t\t<option value=\"50\">50</option>\n\t\t\t\t\t\t\t<option value=\"100\">100</option>\n\t\t\t\t\t\t</select> \n\t\t\t\t\t\trecords ({{ pagination.from }}-{{ pagination.to }} of {{ pagination.total }})\n\t\t\t\t\t</label>\n\t\t\t\t</div>\t\t\t\t\n\t\t\t\t<div class=\"dataTables_paginate paging_simple_numbers\">\n\t\t\t\t\t<a v-on:click.stop.prevent=\"previous\" class=\"paginate_button previous\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === 1}\"><i class=\"fa fa-angle-left\"></i></a>\n\t\t\t\t\t<span v-for=\"page in pagination.last_page\">\n\t\t\t\t\t\t<a v-on:click.stop.prevent=\"goTo(page + 1)\" class=\"paginate_button\" v-bind:class=\"{ 'current': pagination.current_page === page + 1}\">{{ page + 1 }}</a>\n\t\t\t\t\t</span>\n\t\t\t\t\t<a v-on:click.stop.prevent=\"next\" class=\"paginate_button next\" v-bind:class=\"{ 'paginate_button_disabled': pagination.current_page === pagination.last_page}\"><i class=\"fa fa-angle-right\"></i></a>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n</div>\n"
 if (module.hot) {(function () {  module.hot.accept()
   var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   var id = "/var/www/Loan/resources/views/components/user-grid.vue"
   module.hot.dispose(function () {
-    require("vueify-insert-css").cache["\n"] = false
+    require("vueify-insert-css").cache["\n.dataTables_Footer{\n\tfont-size: 12px;\n\tpadding: 0px 0px 5px; \n}\n\n.dataTables_Footer .footer_left{\n  float: left;     \n}\n\n.dataTables_Footer .footer_left label{\n\tpadding: 0px;  \n  height: auto; \n  margin: 0px; \n  font-weight: normal; \n}\n\n.dataTables_Footer .footer_left select{\n\twidth: auto;\n  display: inline;\n  margin: 0px 5px;\n}\n\n.dataTables_Footer .footer_right{\n\tfloat: right;\n}\n"] = false
     document.head.removeChild(__vueify_style__)
   })
   if (!module.hot.data) {
